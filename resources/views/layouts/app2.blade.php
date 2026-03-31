@@ -31,7 +31,7 @@
 
 
     {{-- <title>{{ config('app.name', 'Laravel') }}</title> --}}
-    <title>@yield('title') | STI </title>
+    <title>@yield('title') | BAI </title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>STI Presensi</title>
+    <title>BAI Presensi</title>
     {{-- <script src="https://cdn.tailwindcss.com"></script>
       <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css"> --}}
 

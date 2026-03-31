@@ -13,7 +13,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
-    <title>{{ config('app.name', 'STI') }}</title>
+    <title>{{ config('app.name', 'BAI') }}</title>
 
 
     <!-- Fonts -->

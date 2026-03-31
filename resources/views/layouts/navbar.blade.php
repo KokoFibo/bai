@@ -9,7 +9,7 @@
         </li>
     </ul>
 
-    <h2 class="ml-auto text-bold  fs-3">{{ __('STI Payroll System (OS)') }}</h2>
+    <h2 class="ml-auto text-bold  fs-3">{{ __('BAI Payroll System (OS)') }}</h2>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto flex gap-5">

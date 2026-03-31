@@ -26,7 +26,7 @@
     <link rel="icon" href="{{ url('favicon/favicon-32x32.png') }}">
 
 
-    <title>@yield('title') | STI </title>
+    <title>@yield('title') | BAI </title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
