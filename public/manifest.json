@@ -1,0 +1,17 @@
+{
+    "name": "STI Payroll",
+    "short_name": "STI",
+    "start_url": "/index.php",
+    "background_color": "#212529",
+    "description": "STI Payroll Application",
+    "display": "fullscreen",
+    "theme_color": "#212529",
+    "icons": [
+        {
+            "src": "logoyf.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
