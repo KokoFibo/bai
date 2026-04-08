@@ -62,6 +62,14 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+        // 'mysql_salary' => [
+        //     'driver' => 'mysql',
+        //     'host' => env('DB_HOST'),
+        //     'database' => env('DB_SALARY_DATABASE'),
+        //     'username' => env('DB_SALARY_USERNAME'),
+        //     'password' => env('DB_SALARY_PASSWORD'),
+        // ],
+
 
         'pgsql' => [
             'driver' => 'pgsql',
@@ -125,7 +133,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [

@@ -67,11 +67,47 @@ class Test extends Component
 
     $month = 11;
     $year = 2026;
-
     dd('aman');
-    $data = Yfrekappresensi::where('date', '2026-01-24')
-      ->whereNot('late', null)
-      ->get();
+    $karyawans = Karyawan::where('placement_id', 110)->get();
+
+    foreach ($karyawans as $karyawan) {
+      $karyawan->placement_id = 109;
+      $karyawan->save();
+    }
+    dd('dones');
+
+    // $karyawans = DB::connection('mysql_salary')
+    //   ->table('karyawans')
+    //   // ->whereIn('placement_id', [106, 110])
+    //   ->where('placement_id', 110)
+    //   ->get();
+
+    // $userIds = $karyawans->pluck('id_karyawan')->unique();
+    // $users = DB::connection('mysql_salary')
+    //   ->table('users')
+    //   ->whereIn('username', $userIds)
+    //   ->get();
+
+    // foreach ($karyawans as $karyawan) {
+    //   $data = (array) $karyawan;
+
+    //   unset($data['id']); // penting
+
+    //   Karyawan::on('mysql')->create($data);
+    // }
+
+    // foreach ($users as $user) {
+    //   $data = (array) $user;
+
+    //   unset($data['id']); // penting
+
+    //   User::on('mysql')->create($data);
+    // }
+
+
+
+
+    // dd('done');
     // dd($data->count());
 
 
@@ -81,49 +117,6 @@ class Test extends Component
 
 
 
-    $payrolls = Payroll::whereYear('date', 2025)
-      ->whereMonth('date', 9)
-      ->get();
-
-    $beda = []; // untuk menampung data yang tidak sama
-    $cx = 0;
-
-    foreach ($payrolls as $payroll) {
-      $presensis = Yfrekappresensi::whereYear('date', 2025)
-        ->whereMonth('date', 9)
-        ->where('user_id', $payroll->id_karyawan)
-        ->get();
-
-      // $total_hari_kerja = Yfrekappresensi::whereYear('date', 2025)
-      //   ->whereMonth('date', 9)
-      //   ->where('user_id', $payroll->id_karyawan)
-      //   ->count();
-
-      $total_jam_kerja = $presensis->sum('total_jam_kerja');
-      $total_jam_lembur = $presensis->sum('total_jam_lembur');
-      // cek perbedaan
-      // $payroll->hari_kerja != $total_hari_kerja ||
-      if (
-        $payroll->jam_kerja != $total_jam_kerja ||
-        $payroll->jam_lembur != $total_jam_lembur
-      ) {
-        $beda[] = [
-          'id_karyawan' => $payroll->id_karyawan,
-          // 'hari_kerja_payroll' => $payroll->hari_kerja,
-          // 'hari_kerja_presensi' => $total_hari_kerja,
-          'jam_kerja_payroll' => $payroll->jam_kerja,
-          'jam_kerja_presensi' => $total_jam_kerja,
-          'jam_lembur_payroll' => $payroll->jam_lembur,
-          'jam_lembur_presensi' => $total_jam_lembur,
-        ];
-      } else {
-        $cx++;
-      }
-    }
-
-    return view('livewire.test', [
-      'beda' => $beda,
-      'jumlah_sama' => $cx,
-    ]);
+    return view('livewire.test');
   }
 }
