@@ -11,7 +11,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- PWA  -->
-    <meta name="theme-color" content="#212529" />
+    {{-- <meta name="theme-color" content="#212529" /> --}}
+    <meta name="theme-color" content="##1c7351" />
     <link rel="apple-touch-icon" href="{{ asset('logoyf.png') }}">
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
