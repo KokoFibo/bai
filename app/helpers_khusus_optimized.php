@@ -590,7 +590,7 @@ function hitungBPJSdanPPH21(
         : 0;
 
     if ($k->potongan_JKK) {
-        $jkk_company = ($k->gaji_bpjs * 0.89) / 100;
+        $jkk_company = ($k->gaji_bpjs * 0.24) / 100;
     } else {
         $jkk_company = 0;
     }
