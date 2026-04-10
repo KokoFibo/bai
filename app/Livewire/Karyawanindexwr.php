@@ -135,9 +135,11 @@ class Karyawanindexwr extends Component
     public function updatedSearchPlacement()
     {
         if ($this->selectStatus == 1) {
-            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+            $this->statuses = ['PKWT', 'PKWTT'];
         } elseif ($this->selectStatus == 2) {
             $this->statuses = ['Resigned'];
+        } elseif ($this->selectStatus == 4) {
+            $this->statuses = ['Dirumahkan'];
         } elseif ($this->selectStatus == 3) {
             $this->statuses = ['Blacklist'];
         } else {
@@ -255,11 +257,13 @@ class Karyawanindexwr extends Component
             $this->is_tanggal_gajian = false;
 
         if ($this->selectStatus == 1) {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+            $statuses = ['PKWT', 'PKWTT'];
         } elseif ($this->selectStatus == 2) {
             $statuses = ['Resigned'];
         } elseif ($this->selectStatus == 3) {
             $statuses = ['Blacklist'];
+        } elseif ($this->selectStatus == 4) {
+            $statuses = ['Dirumahkan'];
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
@@ -514,11 +518,13 @@ class Karyawanindexwr extends Component
     public function render()
     {
         if ($this->selectStatus == 1) {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+            $statuses = ['PKWT', 'PKWTT'];
         } elseif ($this->selectStatus == 2) {
             $statuses = ['Resigned'];
         } elseif ($this->selectStatus == 3) {
             $statuses = ['Blacklist'];
+        } elseif ($this->selectStatus == 4) {
+            $statuses = ['Dirumahkan'];
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
