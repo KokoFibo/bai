@@ -27,7 +27,7 @@
             <div class="card-header">
                 <div class="d-flex flex-column flex-xl-row  justify-content-between  align-items-center">
                     <div class="col-12 col-xl-3">
-                        <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan STI') }}</h3>
+                        <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
                         @if (isDataUtamaLengkap() > 0)
                             <a href="/datatidaklengkap"><button class="btn btn-danger">Data Utama Tidak
                                     Lengkap</button></a>
