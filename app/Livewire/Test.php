@@ -65,16 +65,10 @@ class Test extends Component
   public function render()
   {
 
-    $month = 11;
+    $month = 3;
     $year = 2026;
     dd('aman');
-    $karyawans = Karyawan::where('placement_id', 110)->get();
 
-    foreach ($karyawans as $karyawan) {
-      $karyawan->placement_id = 109;
-      $karyawan->save();
-    }
-    dd('dones');
 
     // $karyawans = DB::connection('mysql_salary')
     //   ->table('karyawans')

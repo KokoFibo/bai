@@ -298,17 +298,19 @@ class Payrollwr extends Component
         // Panggil fungsi bulan untuk memperbarui daftar bulan
 
         $data = Payroll::first();
-        if (now()->day < 5) {
-            $this->year =
-                now()->subMonth()->year;
-            $this->month =
-                now()->subMonth()->month;
-        } else {
-            $data3 = Payroll::orderBy('date', 'desc')->first();
-            // $this->year = now()->year;
-            // $this->month = now()->month;
-            $this->year = Carbon::parse($data3->date)->year;
-            $this->month = Carbon::parse($data3->date)->month;
+        if ($data != null) {
+            if (now()->day < 5) {
+                $this->year =
+                    now()->subMonth()->year;
+                $this->month =
+                    now()->subMonth()->month;
+            } else {
+                $data3 = Payroll::orderBy('date', 'desc')->first();
+                // $this->year = now()->year;
+                // $this->month = now()->month;
+                $this->year = Carbon::parse($data3->date)->year;
+                $this->month = Carbon::parse($data3->date)->month;
+            }
         }
 
         if ($data != null) {
