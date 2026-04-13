@@ -27,8 +27,15 @@
                 <th style="text-align: center;">Level Jabatan</th>
                 <th style="text-align: center;">Agama</th>
                 <th style="text-align: center;">Etnis</th>
-                <th style="text-align: center;">Status Karyawan</th>
                 <th style="text-align: center;">Tanggal Bergabung</th>
+                <th style="text-align: center;">Status Karyawan</th>
+                @if ($status_karyawan == 2)
+                    <th style="text-align: center;">Tanggal Resigned</th>
+                @endif
+
+                @if ($status_karyawan == 3)
+                    <th style="text-align: center;">Tanggal Blacklist</th>
+                @endif
                 <th style="text-align: center;">Metode Penggajian</th>
                 <th style="text-align: center;">NPWP</th>
                 <th style="text-align: center;">PTKP</th>
@@ -49,8 +56,14 @@
                     <td style="text-align: center"> {{ getGrade($d->level_jabatan) }}</td>
                     <td style="text-align: center"> {{ $d->agama }}</td>
                     <td style="text-align: center"> {{ $d->etnis }}</td>
-                    <td style="text-align: center"> {{ $d->status_karyawan }}</td>
                     <td style="text-align: center"> {{ $d->tanggal_bergabung }}</td>
+                    <td style="text-align: center"> {{ $d->status_karyawan }}</td>
+                    @if ($status_karyawan == 2)
+                        <th style="text-align: center;">{{ $d->tanggal_resigned }}</th>
+                    @endif
+                    @if ($status_karyawan == 3)
+                        <th style="text-align: center;">{{ $d->tanggal_blacklist }}</th>
+                    @endif
                     <td style="text-align: center"> {{ $d->metode_penggajian }}</td>
                     <td style="text-align: center"> {{ $d->no_npwp }}</td>
                     <td style="text-align: center"> {{ $d->ptkp }}</td>
