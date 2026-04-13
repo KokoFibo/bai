@@ -94,7 +94,9 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
 
         return view('karyawan_excel_view', [
             'data' => $data,
-            'header_text' => $header_text
+            'header_text' => $header_text,
+            'status_karyawan' => $this->selectStatus
+
         ]);
     }
 
