@@ -67,9 +67,12 @@ class Test extends Component
 
     $month = 3;
     $year = 2026;
+
+
     dd('aman');
 
-
+    // company bai=106, YNE 103
+    // placement bai= 109, YNE =103
     // $karyawans = DB::connection('mysql_salary')
     //   ->table('karyawans')
     //   // ->whereIn('placement_id', [106, 110])

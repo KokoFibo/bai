@@ -88,7 +88,7 @@
             </div>
             <div class="col">
                 {{-- <p>Waktu Proses : {{ $waktuProses }}</p> --}}
-                <h4 class="text-center text-bold ">{{ __('STI Payroll') }}</h4>
+                <h4 class="text-center text-bold ">{{ __('BAI Payroll') }}</h4>
             </div>
             <div class="col">
                 <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end">
