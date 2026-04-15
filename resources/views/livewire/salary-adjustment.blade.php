@@ -83,6 +83,20 @@
                                     </select>
                                 </div>
                             </th>
+                            @if ($this->cek_gaji_minimal(2200000))
+                                <th><button class="btn btn-warning nightowl-daylight">Karyawan dengan Gaji < 2,2
+                                            juta={{ $this->cek_gaji_minimal(2200000) }} Orang</button>
+                                </th>
+                                @if (auth()->user()->role == 8)
+                                    <th>
+                                        <button class="btn btn-danger nightowl-daylight"
+                                            onclick="confirm('Yakin ingin sesuaikan gaji ke 2.200.000?') || event.stopImmediatePropagation()"
+                                            wire:click="sesuaikan_ke_gaji_minimal(2200000)">
+                                            {{ __('Sesuaikan Ke Gaji Minimal 2,2 jt') }}
+                                        </button>
+                                    </th>
+                                @endif
+                            @endif
                             <th><button class="btn btn-primary nightowl-daylight"
                                     wire:click="refresh">{{ __('Refresh') }}</button>
                             </th>
