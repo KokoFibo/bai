@@ -32,6 +32,26 @@ class SalaryAdjustment extends Component
     public $columnName = 'id_karyawan';
     public $direction = 'desc';
 
+    public function cek_gaji_minimal($gaji_minimal)
+    {
+        $data = Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+            ->where('gaji_pokok', '<', $gaji_minimal)
+            ->where('gaji_pokok', '!=', 0)
+            ->count();
+        return $data;
+    }
+
+    public function sesuaikan_ke_gaji_minimal($gaji_minimal)
+    {
+        Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+            ->where('gaji_pokok', '<', $gaji_minimal)
+            ->where('gaji_pokok', '!=', 0)
+            ->update([
+                'gaji_pokok' => $gaji_minimal
+            ]);
+    }
+
+
     public function excel()
     {
         $nama_file = 'Penyesuaian_Gaji_' . $this->pilihLamaKerja . '_Bulan_Kerja.xlsx';

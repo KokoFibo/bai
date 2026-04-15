@@ -65,55 +65,13 @@ class Test extends Component
   public function render()
   {
 
-    $month = 3;
-    $year = 2026;
 
+    $data = Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+      ->where('gaji_pokok', '<', 2200000)
+      ->paginate(10);
 
-    dd('aman');
-
-    // company bai=106, YNE 103
-    // placement bai= 109, YNE =103
-    // $karyawans = DB::connection('mysql_salary')
-    //   ->table('karyawans')
-    //   // ->whereIn('placement_id', [106, 110])
-    //   ->where('placement_id', 110)
-    //   ->get();
-
-    // $userIds = $karyawans->pluck('id_karyawan')->unique();
-    // $users = DB::connection('mysql_salary')
-    //   ->table('users')
-    //   ->whereIn('username', $userIds)
-    //   ->get();
-
-    // foreach ($karyawans as $karyawan) {
-    //   $data = (array) $karyawan;
-
-    //   unset($data['id']); // penting
-
-    //   Karyawan::on('mysql')->create($data);
-    // }
-
-    // foreach ($users as $user) {
-    //   $data = (array) $user;
-
-    //   unset($data['id']); // penting
-
-    //   User::on('mysql')->create($data);
-    // }
-
-
-
-
-    // dd('done');
-    // dd($data->count());
-
-
-
-
-
-
-
-
-    return view('livewire.test');
+    return view('livewire.test', [
+      'data' => $data
+    ]);
   }
 }
