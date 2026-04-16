@@ -17,7 +17,8 @@ class UserSyncController extends Controller
             'users.role',
             'users.language',
             'karyawans.id_karyawan as id_karyawan',
-            'companies.company_name'
+            'companies.company_name',
+            'karyawans.outsource'
         )
             ->join('karyawans', 'karyawans.id_karyawan', '=', 'users.username')
             ->join('companies', 'companies.id', '=', 'karyawans.company_id')
