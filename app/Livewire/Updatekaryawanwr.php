@@ -55,6 +55,7 @@ class Updatekaryawanwr extends Component
     public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
     public $applicant_id;
     public $jobgrades;
+    public $outsource;
 
 
 
@@ -214,6 +215,7 @@ class Updatekaryawanwr extends Component
         $this->level_jabatan = trim($data->level_jabatan);
         $this->nama_bank = trim($data->nama_bank);
         $this->nomor_rekening = $data->nomor_rekening;
+        $this->outsource = $data->outsource;
 
         //Payroll
         $this->metode_penggajian = trim($data->metode_penggajian);
@@ -813,6 +815,7 @@ class Updatekaryawanwr extends Component
         $data->level_jabatan = $this->level_jabatan;
         $data->nama_bank = $this->nama_bank;
         $data->nomor_rekening = $this->nomor_rekening;
+        $data->outsource = $this->outsource;
 
         // Payroll
         $data->gaji_pokok = $this->gaji_pokok;
