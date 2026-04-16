@@ -269,6 +269,23 @@
                                 </div>
                             @enderror
                         </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label class="form-label">{{ __('OS') }} <span class="text-danger">*</span></label>
+                            <select class="form-select @error('outsource') is-invalid @enderror"
+                                aria-label="Default select example" wire:model="outsource">
+                                <option value="1">{{ __('OS') }}</option>
+                                <option value="0">{{ __('Non-OS') }}</option>
+                            </select>
+                            @error('outsource')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
                     </div>
                 </div>
             </div>

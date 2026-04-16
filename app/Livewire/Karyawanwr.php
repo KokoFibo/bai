@@ -37,6 +37,7 @@ class Karyawanwr extends Component
     public $pilih_department;
     public $pilih_placement;
     public $jobgrades;
+    public $outsource;
 
     public function mount()
     {
@@ -51,6 +52,7 @@ class Karyawanwr extends Component
         // $this->id_karyawan = getNextIdKaryawan();
         $this->id_karyawan = '000000';
         $this->status_karyawan = 'PKWT';
+        $this->outsource = 1;
         $this->tanggungan = 0;
         $this->tanggal_bergabung =  date('d M Y', strtotime(now()->toDateString()));
         $this->id_karyawan_ini = '';
@@ -95,6 +97,7 @@ class Karyawanwr extends Component
         'level_jabatan' => 'nullable',
         'nama_bank' => 'nullable',
         'nomor_rekening' => 'nullable',
+        'outsource' => 'required',
         // PAYROLL
         'metode_penggajian' => 'required',
         'gaji_pokok' => 'numeric|required',
@@ -211,6 +214,7 @@ class Karyawanwr extends Component
             $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
+            $data->outsource = $this->outsource;
 
 
 
@@ -333,6 +337,7 @@ class Karyawanwr extends Component
             $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
+            $data->outsource = $this->outsource;
 
 
             $data->save();
