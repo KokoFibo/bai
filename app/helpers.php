@@ -27,6 +27,27 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+function updateEmail($oldEmail, $newEmail)
+{
+    $response = Http::withToken('yifang18april2026')
+        ->post('https://presensidb.yifang.co.id/api/update-email', [
+            'old_email' => $oldEmail,
+            'new_email' => $newEmail,
+        ]);
+
+    if ($response->failed()) {
+        return [
+            'success' => false,
+            'data' => $response->json()
+        ];
+    }
+
+    return [
+        'success' => true,
+        'data' => $response->json()
+    ];
+}
+
 function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
 {
     $thr = 0;
