@@ -50,9 +50,8 @@
             <div class="main  flex-1 overflow-y-auto ">
 
                 {{-- Ubah Password --}}
-                <div class=" bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
+                {{-- <div class=" bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
                     <div>
-                        {{-- <label class="block text-sm font-medium  text-gray-900">Password Lama</label> --}}
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <input type="password" wire:model="old_password" placeholder="{{ __('Password Lama') }}"
                                 class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
@@ -64,7 +63,6 @@
                         </div>
                     </div>
                     <div>
-                        {{-- <label class="block text-sm font-medium  text-gray-900">Password Baru</label> --}}
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <input type="password" wire:model="new_password" placeholder="{{ __('Password Baru') }}"
                                 class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
@@ -76,7 +74,6 @@
                         </div>
                     </div>
                     <div>
-                        {{-- <label class="block text-sm font-medium  text-gray-900">Konfirmasi</label> --}}
                         <div class="relative mt-1 rounded-md shadow-sm">
                             <input type="password" wire:model="confirm_password" placeholder="{{ __('Konfirmasi') }}"
                                 class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
@@ -89,7 +86,7 @@
                     </div>
                     <button wire:click="changePassword"
                         class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow">{{ __('Ubah Password') }}</button>
-                </div>
+                </div> --}}
 
                 {{-- Ubah Email --}}
                 <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
@@ -97,8 +94,15 @@
                     <div>
                         {{-- <label class="block text-sm font-medium  text-gray-900">Email Baru</label> --}}
                         <div class="relative mt-1 rounded-md shadow-sm">
+
+                            <input type="text" wire:model="current_email" disabled
+                                class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 
+    bg-gray-200 dark:bg-gray-700 
+    text-gray-500 dark:text-gray-400
+    ring-1 ring-inset ring-gray-300 dark:ring-gray-600 sm:text-sm">
+
                             <input type="text" wire:model="email" placeholder="{{ __('Email Baru') }}"
-                                class="block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
+                                class="mt-3 block w-full rounded-md border-0 py-1.5 pl-3 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:">
                             @error('email')
                                 <div class="text-red-500">
                                     {{ $message }}
@@ -112,9 +116,8 @@
                 </div>
 
                 {{-- Ubah Bahasa --}}
-                <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
+                {{-- <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
-                    {{-- <label class="block text-sm font-medium  text-gray-900">Bahasa</label> --}}
                     <div class="flex gap-5">
                         <div>
                             <input wire:model="language" value="Id" type="radio">
@@ -127,12 +130,11 @@
                     </div>
                     <button class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow"
                         wire:click="changeLanguage">{{ __('Ubah Bahasa') }}</button>
-                </div>
+                </div> --}}
 
                 {{-- Update Etnis --}}
-                <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
+                {{-- <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
-                    {{-- <label class="block text-sm font-medium  text-gray-900">Bahasa</label> --}}
                     <div class="flex gap-5">
                         <div>
                             <div>
@@ -165,7 +167,8 @@
                     </div>
                     <button class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow"
                         wire:click="updateEtnis">{{ __('Update Etnis') }}</button>
-                </div>
+                </div> --}}
+
                 {{-- Update Kontak Darurat --}}
                 <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
                     <div class="flex flex-col gap-3">
