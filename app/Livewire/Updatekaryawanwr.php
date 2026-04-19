@@ -56,6 +56,9 @@ class Updatekaryawanwr extends Component
     public $applicant_id;
     public $jobgrades;
     public $outsource;
+    public $status_karyawan_awal;
+    public $email_awal;
+    public $id_unik_karyawan;
 
 
 
@@ -242,6 +245,11 @@ class Updatekaryawanwr extends Component
         $this->no_npwp = $data->no_npwp;
         $this->ptkp = $data->ptkp;
         $this->id_file_karyawan = $data->id_file_karyawan;
+
+        // tambahan baru
+        $this->status_karyawan_awal = $this->status_karyawan;
+        $this->email_awal = $this->email;
+        $this->id_unik_karyawan = $data->id;
 
         // data Applicant files
         // $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
@@ -797,12 +805,12 @@ class Updatekaryawanwr extends Component
         if ($this->status_karyawan == 'Resigned') {
             $data->tanggal_blacklist = null;
             $data->tanggal_resigned = $this->tanggal_resigned;
-            $data->email = 'resigned_' . trim($this->email);
+            // $data->email = 'resigned_' . trim($this->email);
         } elseif ($this->status_karyawan == 'Blacklist') {
 
             $data->tanggal_resigned = null;
             $data->tanggal_blacklist = $this->tanggal_blacklist;
-            $data->email = 'blacklist_' . trim($this->email);
+            // $data->email = 'blacklist_' . trim($this->email);
         } else {
             $data->tanggal_blacklist = null;
             $data->tanggal_resigned = null;
@@ -847,6 +855,44 @@ class Updatekaryawanwr extends Component
         $this->id_file_karyawan = $data->id_file_karyawan;
 
         $data->save();
+
+
+        // jika email diubah maka ubah juga yang di user table
+        if ($this->email != $this->email_awal) {
+            $result = updateEmail($this->email_awal, $this->email);
+            if (!$result['success']) {
+                $this->dispatch(
+                    'message',
+                    type: 'error',
+                    title: 'Gagal mengupdate email di table users.',
+                    position: 'center'
+                );
+            } else {
+                $this->email_awal = $this->email;
+            }
+        }
+
+        // Delete user yang resigned atau blacklist di table users
+        if ($this->status_karyawan == 'Resigned' || $this->status_karyawan == 'Blacklist') {
+            $result = deleteUserByid_unik_karyawan($this->id_unik_karyawan);
+            if ($result['status'] != 1) {
+                $this->dispatch(
+                    'message',
+                    type: 'error',
+                    title: 'Gagal Menghapus user yang sudah Resigned atau Blacklist.',
+                    position: 'center'
+                );
+            }
+            $this->status_karyawan_awal = $this->status_karyawan;
+        }
+
+        // Jika status dikembalikan dari Resigned atau Blacklist ke PKWT, PKWTT, atau Dirumahkan, maka buat user baru di table users
+        if (
+            in_array($this->status_karyawan_awal, ['Resigned', 'Blacklist']) &&
+            in_array($this->status_karyawan, ['PKWT', 'PKWTT', 'Dirumahkan'])
+        ) {
+            $result =  createUser($this->id_karyawan);
+        }
 
 
         $dataUser = User::where('username', $data->id_karyawan)->first();

@@ -27,6 +27,71 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+function createUser($id_karyawan)
+{
+    $data = Karyawan::where('id_karyawan', $id_karyawan)->first();
+
+    if (!$data) {
+        return [
+            'status' => false,
+            'message' => 'Data karyawan tidak ditemukan'
+        ];
+    }
+
+    // 🔐 password dari tanggal lahir
+    $password = Carbon::parse($data->tanggal_lahir)->format('dmy');
+
+    $response = Http::withToken('yifang18april2026')
+        ->post('https://presensidb.yifang.co.id/api/create-user', [
+            // ->post('http://127.0.0.1:8000/api/create-user', [
+            'name' => $data->nama,                 // sesuaikan kolom
+            'email' => $data->email,
+            'password' => $password,
+            'db_code' => 'bai',                // ✅ FIX sesuai request kamu
+            'id_karyawan' => $data->id_karyawan,
+            'id_unik_karyawan' => $data->id,
+            'role' => 1,                           // default (ubah kalau perlu)
+            'language' => 'Id',
+            'outsource' => $data->outsource,       // ✅ ambil dari data
+            'company_name' => nama_company($data->company_id) ?? null,
+        ]);
+
+    if ($response->successful()) {
+        return [
+            'status' => true,
+            'message' => 'User berhasil dibuat',
+            'data' => $response->json()
+        ];
+    }
+
+    return [
+        'status' => false,
+        'message' => 'Gagal create user',
+        'error' => $response->json()
+    ];
+}
+
+function deleteUserByid_unik_karyawan($id_unik_karyawan)
+{
+    $response = Http::withToken('yifang18april2026')
+        ->delete('https://presensidb.yifang.co.id/api/user/' . $id_unik_karyawan);
+    // ->delete('http://127.0.0.1:8000/api/user/' . $id_karyawan);
+
+    if ($response->successful()) {
+        return [
+            'status' => true,
+            'message' => 'User berhasil dihapus di API',
+            'data' => $response->json()
+        ];
+    }
+
+    return [
+        'status' => false,
+        'message' => 'Gagal menghapus user',
+        'error' => $response->json()
+    ];
+}
+
 function updateEmail($oldEmail, $newEmail)
 {
     $response = Http::withToken('yifang18april2026')
