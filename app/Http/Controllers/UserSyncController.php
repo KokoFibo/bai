@@ -17,6 +17,7 @@ class UserSyncController extends Controller
             'users.role',
             'users.language',
             'karyawans.id_karyawan as id_karyawan',
+            'karyawans.id as id_unik_karyawan',
             'companies.company_name',
             'karyawans.outsource'
         )
