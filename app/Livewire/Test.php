@@ -64,7 +64,7 @@ class Test extends Component
 
   public function render()
   {
-
+    dd('aman');
     Karyawan::query()->update([
       'outsource' => true
     ]);
