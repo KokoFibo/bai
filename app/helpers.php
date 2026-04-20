@@ -27,22 +27,24 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-function callUpdateCompanyNameApi($idUnikKaryawan, $companyName)
+function callUpdateUserDataApi($idUnikKaryawan, $companyName, $name, $outsource)
 {
     try {
         $response = Http::withToken('yifang18april2026')
             ->timeout(10)
             ->retry(3, 200)
-            ->post('https://presensidb.yifang.co.id/api/update-company-name', [
+            ->post('https://presensidb.yifang.co.id/api/update-user-data', [
                 'id_unik_karyawan' => $idUnikKaryawan,
                 'company_name'     => $companyName,
+                'name'     => $name,
+                'outsource'     => $outsource,
             ]);
 
         // Kalau API gagal (422, 404, 500, dll)
         if ($response->failed()) {
             return [
                 'success' => false,
-                'message' => 'Gagal update company via API',
+                'message' => 'Gagal update data via API',
                 'status'  => $response->status(),
                 'response' => $response->json(),
             ];
@@ -51,7 +53,7 @@ function callUpdateCompanyNameApi($idUnikKaryawan, $companyName)
         // Sukses
         return [
             'success' => true,
-            'message' => 'Berhasil update company via API',
+            'message' => 'Berhasil update data via API',
             'data'    => $response->json(),
         ];
     } catch (\Throwable $e) {
