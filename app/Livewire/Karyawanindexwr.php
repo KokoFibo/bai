@@ -91,6 +91,9 @@ class Karyawanindexwr extends Component
             $user->delete();
             $Data_Karyawan->delete();
 
+            //delete user di database presensidb
+            deleteUserByid_unik_karyawan($id);
+
             $this->dispatch(
                 'message',
                 type: 'success',
