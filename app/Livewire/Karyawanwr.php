@@ -233,7 +233,10 @@ class Karyawanwr extends Component
                 ]);
                 $this->tanggal_lahir = date('d M Y', strtotime($this->tanggal_lahir));
                 $this->tanggal_bergabung = date('d M Y', strtotime($this->tanggal_bergabung));
-                // $this->dispatch('success', message: 'Data Karyawan Sudah di Save');
+
+                // create user
+                createUser($this->id_karyawan);
+
                 $this->dispatch(
                     'message',
                     type: 'success',
