@@ -27,6 +27,42 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+function callUpdateCompanyNameApi($idUnikKaryawan, $companyName)
+{
+    try {
+        $response = Http::withToken('yifang18april2026')
+            ->timeout(10)
+            ->retry(3, 200)
+            ->post('https://presensidb.yifang.co.id/api/update-company-name', [
+                'id_unik_karyawan' => $idUnikKaryawan,
+                'company_name'     => $companyName,
+            ]);
+
+        // Kalau API gagal (422, 404, 500, dll)
+        if ($response->failed()) {
+            return [
+                'success' => false,
+                'message' => 'Gagal update company via API',
+                'status'  => $response->status(),
+                'response' => $response->json(),
+            ];
+        }
+
+        // Sukses
+        return [
+            'success' => true,
+            'message' => 'Berhasil update company via API',
+            'data'    => $response->json(),
+        ];
+    } catch (\Throwable $e) {
+        return [
+            'success' => false,
+            'message' => 'Terjadi error saat call API',
+            'error'   => $e->getMessage(),
+        ];
+    }
+}
+
 function createUser($id_karyawan)
 {
     $data = Karyawan::where('id_karyawan', $id_karyawan)->first();
