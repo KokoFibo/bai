@@ -57,7 +57,20 @@ class KaryawanReinstate extends Component
             );
             return;
         }
+
         $data_baru = $data_lama->replicate();
+
+        // rubah email di data lama
+        do {
+            $random = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
+            $newEmail = "email_kosong_{$random}@email.com";
+        } while (Karyawan::where('email', $newEmail)->exists());
+
+        $data_lama->email = $newEmail;
+        $data_lama->save();
+
+
+        // $data_baru = $data_lama->replicate();
 
         $data_baru->status_karyawan = $this->status_karyawan;
         $data_baru->tanggal_bergabung = date('Y-m-d', strtotime(now()->toDateString()));
@@ -65,10 +78,9 @@ class KaryawanReinstate extends Component
         $data_baru->id_karyawan = $new_id;
         $data_baru->save();
 
-        $user = User::where('username', $data_lama->id_karyawan)->first();
-        $user->password = Hash::make(generatePassword($data_lama->tanggal_lahir));
-        $user->username = $new_id;
-        $user->save();
+        // buat user baru di presensidb
+        createUser($new_id);
+
         $this->dispatch(
             'reinstate',
             type: 'reinstate',

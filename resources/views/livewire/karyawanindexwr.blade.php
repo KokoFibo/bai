@@ -337,7 +337,7 @@
                                                     class="btn btn-success btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-regular fa-pen-to-square"></i></button></a>
                                             {{-- ok --}}
-                                            @if ($selectStatus == 2)
+                                            @if ($selectStatus == 2 || $selectStatus == 3)
                                                 <a href="/karyawanreinstate/{{ $data->id }}"><button
                                                         class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}">R</button></a>
                                             @endif
