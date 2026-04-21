@@ -1,60 +1,78 @@
 <div>
     @if ($showMenu)
-        <div class='h-screen flex  flex-col  justify-center items-center px-5 mx-auto gap-10'>
-            <div>
-                <h3 class="text-4xl font-bold text-center mb-5">Formulir Pendaftaran Karyawan Baru</h3>
-                <p class="text-lg mb-3">Selamat datang,</p>
-                <p class="text-lg">jika anda belum pernah mendaftar sebelumnya, silakan pilih menu
-                    "Register",</p>
-                <p class="text-lg">
-                    jika anda ingin merubah data atau mengupload file, silakan pilih menu "Sudah Pernah Register".
-                </p>
-                <p class="text-lg mb-3 mt-3">
-                    Sebelum mulai register silakan siapkan terlebih softcopy dalam format jpg/png/pdf, untuk mempermudah
-                    proses registrasi</p>
-                <div class="flex flex-col gap-5 md:flex-row ">
-                    <div>
-                        <p class="text-xl mb-2 underline">Wajib:</p>
-                        <ul>
-                            <li class="text-lg">KTP / Pasport </li>
-                            <li class="text-lg">Passfoto </li>
-                            <li class="text-lg">CV</li>
-                            <li class="text-lg">Ijasah</li>
-                            <li class="text-lg">Transkip Nilai/SKHUN</li>
-                            <li class="text-lg">Kartu Keluarga</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="text-xl mb-2 underline">Jika ada</p>
-                        <ul>
-                            <li class="text-lg">NPWP</li>
-                            <li class="text-lg">Sertifikat</li>
-                            <li class="text-lg">Paklaring (bagi yang pernah kerja)</li>
-                            <li class="text-lg">kartu BPJS Ketenagakerjaan (Yang belum di klaim)</li>
-                            <li class="text-lg">Paklaring (bagi yang pernah kerja)</li>
-                            <li class="text-lg">Scan Buku tabungan depan untuk No Rekening BRI</li>
-                        </ul>
+        <div class="min-h-screen flex flex-col justify-center items-center px-4 py-10 mx-auto gap-10">
 
-                    </div>
+            <div class="w-full max-w-4xl space-y-6">
+
+                <!-- Title -->
+                <div class="text-center space-y-3">
+                    <h3 class="text-2xl md:text-4xl font-bold text-gray-800">
+                        Formulir Pendaftaran Karyawan Baru
+                    </h3>
+
+                    <p class="text-gray-600">Selamat datang,</p>
+
+                    <p class="text-gray-600">
+                        Jika anda belum pernah mendaftar sebelumnya, silakan pilih menu <span
+                            class="font-semibold">"Register"</span>.
+                    </p>
+
+                    <p class="text-gray-600">
+                        Jika anda ingin merubah data atau mengupload file, silakan pilih menu <span
+                            class="font-semibold">"Sudah Pernah Register"</span>.
+                    </p>
+
+                    <p class="text-gray-600 pt-2">
+                        Sebelum mulai register, siapkan softcopy dalam format JPG/PNG/PDF untuk mempercepat proses
+                        registrasi.
+                    </p>
                 </div>
 
+                <!-- Lists -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
+                    <div class="bg-white rounded-2xl shadow-sm border p-5">
+                        <p class="text-lg font-semibold mb-3 underline">Wajib</p>
+                        <ul class="space-y-1 text-gray-700 list-disc list-inside">
+                            <li>KTP / Passport</li>
+                            <li>Pas foto</li>
+                            <li>CV</li>
+                            <li>Ijazah</li>
+                            <li>Transkip Nilai / SKHUN</li>
+                            <li>Kartu Keluarga</li>
+                        </ul>
+                    </div>
 
+                    <div class="bg-white rounded-2xl shadow-sm border p-5">
+                        <p class="text-lg font-semibold mb-3 underline">Jika ada</p>
+                        <ul class="space-y-1 text-gray-700 list-disc list-inside">
+                            <li>NPWP</li>
+                            <li>Sertifikat</li>
+                            <li>Paklaring (bagi yang pernah kerja)</li>
+                            <li>BPJS Ketenagakerjaan (yang belum diklaim)</li>
+                            <li>Scan buku tabungan (rekening BRI)</li>
+                        </ul>
+                    </div>
 
+                </div>
 
+                <!-- Buttons -->
+                <div class="flex flex-col lg:flex-row gap-4 w-full">
 
+                    <button
+                        class="w-full lg:h-16 text-lg lg:text-xl font-semibold bg-green-500 hover:bg-green-600 text-white rounded-xl shadow-md transition-all duration-200"
+                        wire:click="register">
+                        Register
+                    </button>
 
-            </div>
+                    <button
+                        class="w-full lg:h-16 text-lg lg:text-xl font-semibold bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-md transition-all duration-200"
+                        wire:click="alreadyRegistered">
+                        Sudah Pernah Register
+                    </button>
 
-            <div class="flex  lg:flex-row flex-col w-full justify-center items-center  gap-3">
-                <button
-                    class="text-lg lg:text-2xl hover:bg-green-700 bg-green-500 text-white px-3 py-2 rounded-xl w-full lg:h-20"
-                    wire:click="register">Register</button>
-                <button
-                    class="text-lg lg:text-2xl hover:bg-blue-700 bg-blue-500 text-white px-3 py-2 rounded-xl w-full lg:h-20"
-                    wire:click="alreadyRegistered">Sudah
-                    Pernah
-                    Register</button>
+                </div>
+
             </div>
         </div>
     @endif
