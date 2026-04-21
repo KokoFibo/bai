@@ -5,9 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\Karyawan;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\Rule;
 
 class ApiController extends Controller
 {
+
+    public function updateEmail(Request $request)
+    {
+        $request->validate([
+            'id' => ['required'],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('karyawans', 'email')->ignore($request->id),
+            ],
+        ]);
+
+        $karyawan = Karyawan::findOrFail($request->id);
+
+        $karyawan->email = $request->email;
+        $karyawan->save();
+
+        return response()->json([
+            'message' => 'Email berhasil diupdate',
+            'data' => $karyawan
+        ]);
+    }
 
     public function store($id)
     {
