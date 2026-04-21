@@ -1,6 +1,6 @@
 <div>
     @if ($showMenu)
-        <div class="min-h-screen flex flex-col justify-center items-center px-4 py-10 mx-auto gap-10">
+        <div class="my-5 min-h-screen flex flex-col justify-center items-center px-4 py-10 mx-auto gap-10">
 
             <div class="w-full max-w-4xl space-y-6">
 
