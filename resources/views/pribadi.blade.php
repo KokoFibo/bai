@@ -14,7 +14,7 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label class="form-label">{{ __('Email') }} </label>
+            <label class="form-label">{{ __('Email') }} <span class="text-danger">*</span></label>
             <input wire:model="email" type="email" class="form-control @error('email') is-invalid @enderror">
             @error('email')
                 <div class="invalid-feedback">

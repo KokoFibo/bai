@@ -90,7 +90,8 @@ class Infokaryawan extends Component
             ->where(function ($q) {
                 $q->whereNull('email')
                     ->orWhere('email', '')
-                    ->orWhere('email', ' ');
+                    ->orWhere('email', ' ')
+                    ->orWhere('email', 'like', 'email_kosong_%'); // ⬅️ tambahan
             })
             ->get();
 
