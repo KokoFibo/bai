@@ -185,7 +185,7 @@
                         //     // Company STI = 101
                         //     $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
                         // }
-                    } else { 
+                    } else {
                         $jkk_company = 0;
                     }
 
@@ -209,7 +209,8 @@
 
                     $total_bpjs_company = 0;
                     $total_bpjs_company =
-                        $d->gaji_bpjs +
+                        // $d->gaji_bpjs +
+                        $d->bpjs_adjustment +
                         $jkk_company +
                         $jkm_company +
                         $kesehatan_company +
