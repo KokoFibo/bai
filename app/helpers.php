@@ -27,6 +27,27 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+function resetPasswordApi($email, $tanggalLahir)
+{
+
+    $response = Http::withToken('yifang18april2026')
+        ->acceptJson()
+        ->post('https://presensidb.yifang.co.id/api/reset-password', [
+            // ->post('http://127.0.0.1:8000/api/reset-password', [
+            'email' => $email,
+            'tanggal_lahir' => $tanggalLahir,
+        ]);
+
+    if ($response->successful()) {
+        return $response->json();
+    }
+
+    return [
+        'success' => false,
+        'message' => $response->json()['message'] ?? 'Request gagal'
+    ];
+}
+
 function callUpdateUserDataApi($idUnikKaryawan, $companyName, $name, $outsource)
 {
     try {

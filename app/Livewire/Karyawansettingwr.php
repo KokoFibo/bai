@@ -17,7 +17,7 @@ class Karyawansettingwr extends Component
     public function resetPassword()
     {
         if ($this->username != null) {
-            $user = User::where('username', $this->username)->first();
+            $user = Karyawan::where('id_karyawan', $this->username)->first();
             if ($user == null) {
                 // $this->dispatch('error', message: 'ID: ' . $this->username . ' tidak terdapat pada table USER');
                 $this->dispatch(
@@ -27,11 +27,21 @@ class Karyawansettingwr extends Component
                 );
                 return;
             }
-            $data = User::find($user->id);
+            $data = User::where('username', $this->username)->first();
 
             if ($data) {
+
                 $data->password = Hash::make(generatePassword($this->tanggal_lahir));
                 $data->save();
+
+                // reset password di database user
+
+                $result = resetPasswordApi(
+                    // update yang di user database
+                    $user->email,
+                    $user->tanggal_lahir,
+                );
+
                 // $this->dispatch('success', message: 'Password berhasil di reset');
                 $this->dispatch(
                     'message',
