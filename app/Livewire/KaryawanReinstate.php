@@ -59,6 +59,7 @@ class KaryawanReinstate extends Component
         }
 
         $data_baru = $data_lama->replicate();
+        $email_lama = $data_lama->email;
 
         // rubah email di data lama
         do {
@@ -76,6 +77,7 @@ class KaryawanReinstate extends Component
         $data_baru->tanggal_bergabung = date('Y-m-d', strtotime(now()->toDateString()));
         $new_id = getNextIdKaryawan();
         $data_baru->id_karyawan = $new_id;
+        $data_baru->email = $email_lama;
         $data_baru->save();
 
         // buat user baru di presensidb
