@@ -380,8 +380,18 @@
 
                                     @if ((auth()->user()->role == 5 && $data->gaji_pokok <= 4500000) || auth()->user()->role >= 6)
                                         @if (Auth::user()->role > 5)
-                                            <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}
-                                            </td>
+                                            @if ($data->status_karyawan == 'Resigned')
+                                                <td class="text-center">
+                                                    {{ lamaBekerjaBlacklistResigned($data->tanggal_bergabung, $data->tanggal_resigned) }}
+                                                </td>
+                                            @elseif($data->status_karyawan == 'Blacklist')
+                                                <td class="text-center">
+                                                    {{ lamaBekerjaBlacklistResigned($data->tanggal_bergabung, $data->tanggal_blacklist) }}
+                                                </td>
+                                            @else
+                                                <td class="text-center">{{ lamaBekerja($data->tanggal_bergabung) }}
+                                                </td>
+                                            @endif
                                         @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>

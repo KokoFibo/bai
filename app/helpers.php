@@ -2387,6 +2387,23 @@ function checkNonRegisterUser()
     return $array;
 }
 
+function lamaBekerjaBlacklistResigned($tglJoin, $tglResignedBlacklist)
+{
+    $date = Carbon::parse($tglJoin);
+    $tglResigned = Carbon::parse($tglResignedBlacklist);
+    $diff = $date->diffIndays($tglResigned);
+    $tahun = floor($diff / 365);
+    if ($diff < 30) {
+        return $diff . ' Hari';
+    }
+    if ($tahun < 1) {
+        $month = floor($diff / 30);
+        return (int) $month . ' Bulan';
+    }
+    $month = floor(($diff % ($tahun * 365)) / 30);
+    return (int) $tahun . ' Tahun ' . (int) $month . ' Bulan';
+}
+
 function lamaBekerja($tgl)
 {
     $date = Carbon::parse($tgl);
