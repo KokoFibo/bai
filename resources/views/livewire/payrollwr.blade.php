@@ -410,7 +410,9 @@
                                         class="fa-solid fa-sort"></i></th>
                                 <th>{{ __('TER') }}</th>
 
-                                <th wire:click="sortColumnName('pph21')">{{ __('Total BPJS') }} <i
+                                <th wire:click="sortColumnName('total_bpjs')">{{ __('Total BPJS') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('bpjs_adjustment')">{{ __('BPJS Adjustment') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('pph21')">{{ __('PPh21') }} <i
                                         class="fa-solid fa-sort"></i></th>
@@ -523,6 +525,7 @@
                                                 <td class="text-end"></td>
                                             @endif
                                             <td class="text-end">{{ number_format($p->total_bpjs) }}</td>
+                                            <td class="text-end">{{ number_format($p->bpjs_adjustment) }}</td>
                                             <td class="text-end">{{ number_format($p->pph21) }}</td>
                                             <td class="text-end">{{ number_format($p->total) }}</td>
 
