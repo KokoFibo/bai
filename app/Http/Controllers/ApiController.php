@@ -11,6 +11,43 @@ use Illuminate\Validation\Rule;
 class ApiController extends Controller
 {
 
+    public function getPayroll($id_karyawan, $month, $year)
+    {
+        try {
+            // Validasi manual (simple)
+            if (!$id_karyawan || !$month || !$year) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Parameter tidak lengkap'
+                ], 400);
+            }
+
+            $payroll = Payroll::where('id_karyawan', $id_karyawan)
+                ->whereMonth('date', $month)
+                ->whereYear('date', $year)
+                ->first();
+
+            if (!$payroll) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data payroll tidak ditemukan'
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil diambil',
+                'data' => $payroll
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan pada server',
+                'error' => $e->getMessage() // opsional, bisa di-hide di production
+            ], 500);
+        }
+    }
+
     public function updateEmail(Request $request)
     {
         $request->validate([
