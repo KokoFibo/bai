@@ -27,6 +27,24 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
+function nik($id)
+{
+    // Fetch the Karyawan data by ID
+    $karyawan = Karyawan::where('id_karyawan', $id)->select('no_identitas')->first();
+
+    if ($karyawan) {
+        return (string) $karyawan->no_identitas;
+    }
+    return null;
+}
+
+// function no_npwp($id): ?string
+// {
+//     $npwp = Karyawan::where('id_karyawan', $id)->value('no_npwp');
+
+//     return $npwp !== null ? (string) $npwp : null;
+// }
+
 function resetPasswordApi($email, $tanggalLahir)
 {
 

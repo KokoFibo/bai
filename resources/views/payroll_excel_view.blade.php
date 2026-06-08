@@ -92,6 +92,11 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
                 <th colspan="5" style="text-align: center; background-color: green; color:black">
                     <h4>Karyawan</h4>
                 </th>
@@ -113,7 +118,6 @@
                 <th style="text-align: center;">Nama Karyawan</th>
                 <th style="text-align: center;">Bank</th>
                 <th style="text-align: center;">No. Rekening</th>
-                <th style="text-align: center;">No NPWP</th>
                 <th style="text-align: center;">Jabatan</th>
                 <th style="text-align: center;">Company</th>
                 <th style="text-align: center;">Directorate</th>
@@ -122,10 +126,15 @@
                 <th style="text-align: center;">Total Hari Kerja</th>
                 <th style="text-align: center;">Total Jam Kerja (Bersih)</th>
                 <th style="text-align: center;">Total Jam Lembur</th>
+                <th style="text-align: center;">Total Jam Kerja Libur</th>
+                <th style="text-align: center;">Total Jam Lembur Libur</th>
                 <th style="text-align: center;">Jumlah Jam Terlambat</th>
                 <th style="text-align: center;">Tambahan Shift Malam</th>
                 <th style="text-align: center;">Gaji Pokok</th>
+                <th style="text-align: center;">Gaji Perhari/Perjam</th>
+                <th style="text-align: center;">Gaji bulan ini </th>
                 <th style="text-align: center;">Gaji Lembur</th>
+                <th style="text-align: center;">Total Gaji Lembur</th>
                 <th style="text-align: center;">Gaji Libur</th>
                 <th style="text-align: center;">Bonus/U.Makan</th>
                 <th style="text-align: center;">THR</th>
@@ -138,6 +147,7 @@
                 <th style="text-align: center;">Iuran Air</th>
                 <th style="text-align: center;">Iuran Locker</th>
                 <th style="text-align: center;">Status Karyawan</th>
+                <th style="text-align: center;">Gaji BPJS with adjustment</th>
                 <th style="text-align: center;">Gaji BPJS</th>
                 <th style="text-align: center;">JHT</th>
                 <th style="text-align: center;">JP</th>
@@ -149,11 +159,13 @@
                 <th style="text-align: center;">JKK</th>
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
-                <th style="text-align: center;">Total BPJS</th>
+                <th style="text-align: center;">Total BPJS / Total Tax</th>
                 <th style="text-align: center;">PTKP</th>
                 <th style="text-align: center;">TER</th>
                 <th style="text-align: center;">Rate</th>
                 <th style="text-align: center;">Pph21</th>
+                <th style="text-align: center;">NIK</th>
+                <th style="text-align: center;">No NPWP</th>
                 <th style="text-align: center;">Total</th>
 
             </tr>
@@ -256,7 +268,6 @@
                     <td> {{ $d->nama }}</td>
                     <td style="text-align: center"> {{ $d->nama_bank }}</td>
                     <td style="text-align: center"> {{ strval($d->nomor_rekening) }}</td>
-                    <td style="text-align: right"> {{ no_npwp($d->id_karyawan) }}</td>
                     <td style="text-align: center"> {{ nama_jabatan($d->jabatan_id) }}</td>
                     <td style="text-align: center"> {{ nama_company($d->company_id) }}</td>
                     <td style="text-align: center"> {{ nama_placement($d->placement_id) }}</td>
@@ -265,10 +276,21 @@
                     <td> {{ $d->hari_kerja }}</td>
                     <td> {{ $d->jam_kerja }}</td>
                     <td> {{ $d->jam_lembur }}</td>
+                    <td> {{ $d->jam_kerja_libur }}</td>
+                    <td> {{ $d->jam_lembur_libur }}</td>
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
+                    @if ($d->metode_penggajian == 'Perjam')
+                        <td style="text-align: right"> {{ $d->gaji_pokok / 198 }}</td>
+                    @else
+                        <td style="text-align: right"> {{ $d->gaji_pokok / $total_n_hari_kerja }}</td>
+                    @endif
+                    {{-- <td style="text-align: right"> {{ $gaji_bulan_ini }}</td> --}}
+                    <td style="text-align: right"> {{ $d->gaji_bulan_ini }}</td>
+
                     <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_lembur * $d->jam_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
                     <td style="text-align: right"> {{ $d->bonus1x }}</td>
                     <td style="text-align: right"> {{ $d->thr }}</td>
@@ -282,6 +304,7 @@
                     <td style="text-align: right"> {{ $d->iuran_air }}</td>
                     <td style="text-align: right"> {{ $d->iuran_locker }}</td>
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>
+                    <td style="text-align: center"> {{ $d->bpjs_adjustment }}</td>
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
                     <td style="text-align: right"> {{ $d->jht }}</td>
                     <td style="text-align: right"> {{ $d->jp }}</td>
@@ -331,10 +354,13 @@
 
                     {{-- <td style="text-align: right"> {{ $total_bpjs_company }}</td> --}}
                     <td style="text-align: right"> {{ $d->total_bpjs }}</td>
+
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
                     <td style="text-align: right"> {{ $d->pph21 }}</td>
+                    <td style="text-align: right"> {{ "'" . trim(strval(nik($d->id_karyawan))) }}</td>
+                    <td style="text-align: right"> {{ "'" . trim(strval(no_npwp($d->id_karyawan))) }}</td>
                     <td style="text-align: right"> {{ $d->total }}</td>
                 </tr>
             @endforeach
