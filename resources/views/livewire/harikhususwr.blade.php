@@ -34,6 +34,13 @@
                     is Hari Libur Nasional
                 </label>
             </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkDefault"
+                    wire:model='is_usual_working_day'>
+                <label class="form-check-label" for="checkDefault">
+                    is Usual Working Day
+                </label>
+            </div>
             <button class="btn btn-primary mt-3" wire:click='save'>Save</button>
         </div>
     </div>
@@ -46,6 +53,7 @@
                 <th>Saturday</th>
                 <th>Sunday</th>
                 <th>Hari Libur Nasional</th>
+                <th>Usual Working Day</th>
             </tr>
         </thead>
         <tbody>
@@ -57,6 +65,7 @@
                     <td>{{ $d->is_saturday ? 'Yes' : 'No' }}</td>
                     <td>{{ $d->is_sunday ? 'Yes' : 'No' }}</td>
                     <td>{{ $d->is_hari_libur_nasional ? 'Yes' : 'No' }}</td>
+                    <td>{{ $d->is_usual_working_day ? 'Yes' : 'No' }}</td>
                     <td><button class="btn btn-danger" wire:click='delete({{ $d->id }})'>Delete</button></td>
                 </tr>
             @endforeach
