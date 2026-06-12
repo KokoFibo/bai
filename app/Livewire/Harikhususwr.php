@@ -7,16 +7,9 @@ use Livewire\Component;
 
 class Harikhususwr extends Component
 {
-    public $date, $is_friday = false, $is_saturday = false, $is_sunday = false, $is_hari_libur_nasional = false;
+    public $date, $is_friday = false, $is_saturday = false, $is_sunday = false, $is_hari_libur_nasional = false, $is_usual_working_day = false;
 
-    // public function clear()
-    // {
-    //     $this->date = null;
-    //     $this->is_friday = false;
-    //     $this->is_saturday = false;
-    //     $this->is_sunday = false;
-    //     $this->is_hari_libur_nasional = false;
-    // }
+
 
 
     public function save()
@@ -28,36 +21,22 @@ class Harikhususwr extends Component
             'is_saturday' => 'nullable|boolean',
             'is_sunday' => 'nullable|boolean',
             'is_hari_libur_nasional' => 'nullable|boolean',
+            'is_usual_working_day' => 'nullable|boolean',
         ]);
-        // Cek apakah tanggal sudah ada
-        // $data = new Harikhusus();
-        // $data->date = $this->date;
-        // $data->is_friday = $this->is_friday;
-        // $data->is_saturday = $this->is_saturday;
-        // $data->is_sunday = $this->is_sunday;
-        // $data->is_hari_libur_nasional = $this->is_hari_libur_nasional;
-        // $data->save();
+
 
         if (
             !$this->is_friday &&
             !$this->is_saturday &&
             !$this->is_sunday &&
-            !$this->is_hari_libur_nasional
+            !$this->is_hari_libur_nasional &&
+            !$this->is_usual_working_day
         ) {
             session()->flash('message', 'Minimal satu jenis hari khusus harus dipilih.');
             return;
         }
 
-        // $data = new Harikhusus();
-        // $data->date = $this->date;
-        // $data->is_friday = $this->is_friday;
-        // $data->is_saturday = $this->is_saturday;
-        // $data->is_sunday = $this->is_sunday;
-        // $data->is_hari_libur_nasional = $this->is_hari_libur_nasional;
-        // $data->save();
 
-        // session()->flash('message', 'Hari khusus berhasil disimpan.');
-        // $this->reset(['date', 'is_friday', 'is_saturday', 'is_sunday', 'is_hari_libur_nasional']);
 
         Harikhusus::updateOrCreate(
             ['date' => $this->date], // Hanya cari berdasarkan tanggal
@@ -66,6 +45,7 @@ class Harikhususwr extends Component
                 'is_saturday' => $this->is_saturday,
                 'is_sunday' => $this->is_sunday,
                 'is_hari_libur_nasional' => $this->is_hari_libur_nasional,
+                'is_usual_working_day' => $this->is_usual_working_day,
             ]
         );
 
@@ -75,7 +55,7 @@ class Harikhususwr extends Component
             type: 'success',
             title: 'Hari khusus berhasil disimpan.',
         );
-        $this->reset(['date', 'is_friday', 'is_saturday', 'is_sunday', 'is_hari_libur_nasional']);
+        $this->reset(['date', 'is_friday', 'is_saturday', 'is_sunday', 'is_hari_libur_nasional', 'is_usual_working_day']);
     }
 
     public function delete($id)
