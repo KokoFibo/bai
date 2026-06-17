@@ -2196,7 +2196,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                             // rubah disini jika ada perubahan jam lembur
                             // ini perhitungan utk hari 08:00 - 15:30
                             // di hitung hari 6 jam, untuk lembur mulai 15:30
-                            if ($t2 < strtotime('16:00:00')) {
+                            if ($t2 < strtotime('15:30:00')) {
                                 return $lembur = 0;
                             }
                             $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
