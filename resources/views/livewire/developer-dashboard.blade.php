@@ -56,5 +56,7 @@
         <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_karyawan_company'>Delete
             karyawan
             Company ['YAM', 'YIG', 'YCME', 'YSM','YEV']</button>
+        <a href="/delete-monthly-presensi"><button class='btn btn-danger'>Delete
+                Monthly Presensi</button></a>
     </div>
 </div>
