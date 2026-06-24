@@ -2308,7 +2308,9 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             }
         }
     } else {
-        if ($late == null) {
+        // if ($late == null) {
+        if ($late == null && !(($second_in === null && $second_out === null) || ($first_in === null && $first_out === null))) {
+
             if ($shift == 'Pagi') {
                 if ($is_saturday) {
                     $jam_kerja = 6;
