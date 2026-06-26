@@ -251,14 +251,6 @@
                 });
             });
         </script>
-        <script>
-            document.addEventListener('livewire:init', () => {
-                Livewire.on('reload-page', () => {
-                    alert('reload-page diterima');
-                    window.location.reload();
-                });
-            });
-        </script>
     @endscript
 
 </div>
