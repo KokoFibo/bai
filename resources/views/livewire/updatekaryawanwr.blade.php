@@ -119,10 +119,14 @@
                             <button wire:click="arsip" class="btn btn-success">{{ __('Lihat File Dokumen') }}</button>
                         @else
                             <button class="btn btn-success" disabled>Belum ada file dokumen</button>
+                            <button class="btn btn-primary" wire:click="syncApplicantFiles('{{ $id_file_karyawan }}')">
+                                Import
+                            </button>
                         @endif
                     @else
                         {{-- @if (!$is_folder_kosong) --}}
                         <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
+
                         {{-- @endif --}}
                     @endif
 
@@ -248,4 +252,5 @@
             });
         </script>
     @endscript
+
 </div>
