@@ -64,11 +64,9 @@ class Test extends Component
 
   public function render()
   {
-    $data = User::whereIn('role', ['0', '1'])
-      ->where('username', '!=', '100000')
-      ->delete();
 
-    dd($data);
+
+    dd('Aman');
 
     return view('livewire.test', [
       'data' => $data

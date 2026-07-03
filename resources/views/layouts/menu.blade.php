@@ -91,6 +91,15 @@ with font-awesome or any other icon font library -->
                         </p>
                     </a>
                 </li>
+                <li
+                    class="nav-item {{ 'salaryadjustkaryawanlama' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/salaryadjustkaryawanlama" class="nav-link">
+                        <i class="nav-icon fa-solid fa-sliders"></i>
+                        <p>
+                            {{ __('Penyesuaian Gaji Karyawan lama') }}
+                        </p>
+                    </a>
+                </li>
             @endif
             @if (Auth::user()->role == 8)
                 <li class="nav-item {{ 'yfpresensiindexwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
