@@ -13,8 +13,8 @@
                         <option value="3">{{ __('3 bulan') }}</option>
                         <option value="4">{{ __('4 Bulan') }}</option>
                         <option value="5">{{ __('5 Bulan') }}</option>
-                        <option value="6">{{ __('6 Bulan') }}</option>
-                        <option value="7">{{ __('7 Bulan') }}</option>
+                        {{-- <option value="6">{{ __('6 Bulan') }}</option>
+                        <option value="7">{{ __('7 Bulan') }}</option> --}}
                         {{-- <option value="8">{{ __('8 Bulan') }}</option> --}}
                         {{-- <option value="9">{{ __('9 Bulan') }}</option> --}}
                     </select>

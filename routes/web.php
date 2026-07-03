@@ -86,6 +86,7 @@ use App\Livewire\Requesterwr;
 use App\Livewire\Rubahid;
 use App\Livewire\Rubahidwr;
 use App\Livewire\SalaryAdjustment;
+use App\Livewire\Salaryadjustsaja;
 use App\Livewire\Tambahanwr;
 use App\Livewire\TanpaEmergencyContact;
 use App\Livewire\Terwr;
@@ -235,6 +236,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
                 Route::get('/payrollindex', Prindexwr::class);
                 Route::get('/salaryadjustment', SalaryAdjustment::class);
+                Route::get('/salaryadjustkaryawanlama', Salaryadjustsaja::class);
+
                 Route::get('/liburnasional', Liburnasionalwr::class);
                 Route::get('/tanpaemergensicontact', TanpaEmergencyContact::class);
 
