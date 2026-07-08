@@ -87,6 +87,7 @@ use App\Livewire\Rubahid;
 use App\Livewire\Rubahidwr;
 use App\Livewire\SalaryAdjustment;
 use App\Livewire\Salaryadjustsaja;
+use App\Livewire\SlipGajiDownload;
 use App\Livewire\Tambahanwr;
 use App\Livewire\TanpaEmergencyContact;
 use App\Livewire\Terwr;
@@ -273,6 +274,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/template-gaji-form', [ExcelController::class, 'template_gaji']);
                     Route::get('/template-gaji-form-placement', [ExcelController::class, 'template_gaji_placement']);
                     Route::get('/cek-kenaikan-gaji', Cekkenaikangaji::class);
+                    Route::get('/generateslipgaji', SlipGajiDownload::class);
+
 
 
 

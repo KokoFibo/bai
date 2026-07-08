@@ -200,6 +200,7 @@
                             {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild Lama') }}</button>
                     @endif
+                    <a href="/generateslipgaji" class="btn btn-success nightowl-daylight">Generate Slip Gaji Excel</a>
 
                     <button wire:click="rebuildOptimized"
                         {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
