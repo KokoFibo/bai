@@ -324,7 +324,7 @@ class SlipGajiExport implements
 
             'Iuran BPJS Kesehatan'     => $this->payroll->kesehatan,
 
-            'Iuran BPJS Ketenagakerjaan'     => $this->payroll->kesehatan,
+            'Iuran BPJS Ketenagakerjaan'     => $this->payroll->jp + $this->payroll->jht,
 
             'PPH21'              => $this->payroll->pph21,
 
