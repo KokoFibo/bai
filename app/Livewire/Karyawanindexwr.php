@@ -82,30 +82,81 @@ class Karyawanindexwr extends Component
         }
     }
 
+    public function deleteUserRemote($id_karyawan, $email)
+    {
+        $response = Http::withToken('yifang18april2026')
+            ->acceptJson()
+            ->delete(
+                'http://127.0.0.1:8080/api/user',
+                [
+                    'id_karyawan' => $id_karyawan,
+                    'email'       => $email,
+                ]
+            );
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        return [
+            'success' => false,
+            'status'  => $response->status(),
+            'message' => $response->json('message') ?? $response->body(),
+        ];
+    }
+
+
     public function delete($id)
     {
-        $Data_Karyawan = Karyawan::find($id);
-        $dataUser = User::where('username', $Data_Karyawan->id_karyawan)->first();
-        if ($dataUser->id) {
-            $user = User::find($dataUser->id);
-            $user->delete();
-            $Data_Karyawan->delete();
+        $dataKaryawan = Karyawan::find($id);
 
-            //delete user di database presensidb
-            deleteUserByid_unik_karyawan($id);
-
+        if (!$dataKaryawan) {
             $this->dispatch(
                 'message',
-                type: 'success',
-                title: 'Data Karyawan Sudah di delete',
+                type: 'error',
+                title: 'Data karyawan tidak ditemukan.',
                 position: 'center'
             );
-        } else {
-            // $this->dispatch('info', message: 'Data Karyawan Sudah di Delete, User tidak terdelete');
+
+            return;
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            // Hapus user di server presensi (jika email tersedia)
+            if (!empty($dataKaryawan->email)) {
+
+                $result = $this->deleteUserRemote(
+                    $dataKaryawan->id_karyawan,
+                    $dataKaryawan->email
+                );
+
+                if (!$result['success']) {
+                    throw new \Exception($result['message']);
+                }
+            }
+
+            // Hapus data karyawan lokal
+            $dataKaryawan->delete();
+
+            DB::commit();
+
             $this->dispatch(
                 'message',
                 type: 'success',
-                title: 'Data Karyawan Sudah di Delete, User tidak terdelete',
+                title: 'Data karyawan berhasil dihapus.',
+                position: 'center'
+            );
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: $e->getMessage(),
                 position: 'center'
             );
         }
