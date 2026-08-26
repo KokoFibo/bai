@@ -126,17 +126,17 @@ class Karyawanindexwr extends Component
         try {
 
             // Hapus user di server presensi (jika email tersedia)
-            if (!empty($dataKaryawan->email)) {
+            // if (!empty($dataKaryawan->email)) {
 
-                $result = $this->deleteUserRemote(
-                    $dataKaryawan->id_karyawan,
-                    $dataKaryawan->email
-                );
+            //     $result = $this->deleteUserRemote(
+            //         $dataKaryawan->id_karyawan,
+            //         $dataKaryawan->email
+            //     );
 
-                if (!$result['success']) {
-                    throw new \Exception($result['message']);
-                }
-            }
+            //     if (!$result['success']) {
+            //         throw new \Exception($result['message']);
+            //     }
+            // }
 
             // Hapus data karyawan lokal
             $dataKaryawan->delete();
