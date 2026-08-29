@@ -23,6 +23,7 @@
                         <th>Department</th>
                         <th>Gaji BPJS</th>
                         <th>PTKP</th>
+                        <th>Status Karyawan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,7 @@
                             <td> {{ $d->department->nama_department }}</td>
                             <td> {{ number_format($d->gaji_bpjs) }}</td>
                             <td> {{ $d->ptkp }}</td>
+                            <td> {{ $d->status_karyawan }}</td>
                         </tr>
                     @endforeach
                 </tbody>
