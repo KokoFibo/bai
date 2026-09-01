@@ -56,6 +56,7 @@ class SalaryAdjustment extends Component
     {
         $nama_file = 'Penyesuaian_Gaji_' . $this->pilihLamaKerja . '_Bulan_Kerja.xlsx';
         // return Excel::download(new SalaryAdjustmentExport($this->pilihLamaKerja), $nama_file);
+        // dd($this->pilihLamaKerja, $this->search_placement, $nama_file);
         return Excel::download(new SalaryAdjustmentExport($this->pilihLamaKerja, $this->search_placement), $nama_file);
     }
 
