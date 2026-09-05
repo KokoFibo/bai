@@ -49,16 +49,11 @@
         }
     </style>
     <div class="p-2">
-        {{-- <p>selected_company : {{ $selected_company }}</p>
-        <p>selected_placement : {{ $selected_placement }}</p>
-        <p>selected_departemen : {{ $selected_departemen }}</p> --}}
-        {{-- <p>working days = {{ countWorkingDays($month, $year, [0]) }}, Holidays =
-            {{ jumlah_libur_nasional($month, $year) }}</p> --}}
-        {{-- @if (auth()->user()->role == 8) --}}
+
 
         @if (check_rebuild_done())
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
+                <strong>Congratulation!</strong> Payroll Rebuilt Succesfully.
                 <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
                     aria-label="Close"></button>
             </div>
@@ -74,10 +69,9 @@
             </div>
         @endif
         {{-- @endif --}}
-
         <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
             <div class="col">
-                @if (auth()->user()->role > 7)
+                @if (auth()->user()->role >= 7)
                     <div class="form-check form-switch">
                         <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked" value=1 {{ $lock_slip_gaji ? 'checked' : '' }}>
@@ -93,7 +87,8 @@
 
             </div>
             <div class="col">
-                <h4 class="text-center text-bold ">{{ __('Yifang Payroll') }}</h4>
+                {{-- <p>Waktu Proses : {{ $waktuProses }}</p> --}}
+                <h4 class="text-center text-bold ">{{ __('BAI Payroll') }}</h4>
             </div>
             <div class="col">
                 <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end">
@@ -129,6 +124,13 @@
         @if (!check_rebuilding())
 
             <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
+                {{-- <p>directorate: {{ $selected_placement }}</p>
+                <p>company: {{ $selected_company }}</p>
+                <p>department: {{ $selected_departemen }}</p>
+                <p>search: {{ $search }}</p>
+                <p>month {{ $month }}</p>
+                <p>month {{ $year }}</p>
+                <p>search: {{ $search }}</p> --}}
                 <div class="d-flex gap-2 flex-lg-row flex-column">
                     <button class="btn btn-info nightowl-daylight">{{ __('Total Gaji') }} : Rp.
                         {{ number_format($total) }}</button>
@@ -138,18 +140,21 @@
                                 @foreach ($select_year as $sy)
                                     <option value="{{ $sy }}">{{ $sy }}</option>
                                 @endforeach
+                                {{-- <option value="2025">2025</option> --}}
                             </select>
                         </div>
                         <div>
                             <select class="form-select" wire:model.live="month">
                                 {{-- <option selected>Open this select menu</option>  --}}
+                                {{-- <option value="9">Sept 2025</option> --}}
                                 @foreach ($select_month as $sm)
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
-                                {{-- <option value="6">juni</option> --}}
-
+                                {{-- <option value="12">Desember 2025</option> --}}
+                                {{-- <option value="2">Februari 2026</option> --}}
 
                             </select>
+
                         </div>
                     </div>
                     <div>
@@ -172,20 +177,45 @@
 
                 <div class="d-flex gap-2" wire:loading.class='invisible'>
                     @if (auth()->user()->role == 8)
-                        <button wire:click="buat_payroll('noQueue')"
-                            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                        <a href="/cekabsensitanpaid"><button
+                                class="btn btn-primary nightowl-daylight">{{ __('Cek Absensi Tanpa ID') }}</button></a>
+
+                        <button wire:click="clear_lock()"
+                            class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
+                        <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild wihout queue') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
                     <button class="btn btn-success nightowl-daylight"
                         wire:click="bankexcel">{{ __('Report for bank') }}</button>
+                    {{-- <a href="/headcount"><button
+                            class="btn btn-warning nightowl-daylight">{{ __('Headcount') }}</button></a> --}}
+                    <button wire:click='excelDetailReport'
+                        class="btn btn-warning nightowl-daylight">{{ __('Detail Report') }}</button>
+
                     <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
-                    <button wire:click="buat_payroll('queue')"
-                        {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                    @if (auth()->user()->role == 8)
+                        <button wire:click="buat_payroll('queue')"
+                            {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
+                            class="btn btn-primary nightowl-daylight">{{ __('Rebuild Lama') }}</button>
+                    @endif
+                    <a href="/generateslipgaji" class="btn btn-success nightowl-daylight">Generate Slip Gaji Excel</a>
+
+                    <button wire:click="rebuildOptimized"
+                        {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
                         class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
                 </div>
             </div>
+            @if (isDataUtamaLengkap() > 0)
+                <div class='d-flex m-2 justify-content-center'>
+                    <h4 class='text-danger text-center text-bold mr-3'>Ada beberapa data utama karyawan yang belum
+                        lengkap!
+                    </h4>
+
+                    <a href="/datatidaklengkap"><button class="btn btn-danger">Silakan cek disini</button></a>
+                </div>
+            @endif
         @endif
 
         <div class="card">
@@ -203,16 +233,24 @@
                     <div>
                         <select wire:model.live="selected_placement" class="form-select"
                             aria-label="Default select example">
-                            <option value="0"selected>{{ __('All Placement') }}</option>
+                            <option value="0"selected>{{ __('All Directorates') }}</option>
+                            @foreach ($placements as $p)
+                                <option value="{{ $p->id }}">{{ $p->placement_name }}
+                            @endforeach
+                            {{-- <option value="11">YEV SMOOT</option>
+                            <option value="12">YEV OFFERO</option>
+                            <option value="15">YEV ELEKTRONIK</option> --}}
+                            {{-- <option value="16">Pabrik 1</option>
+                            <option value="11">Pabrik 2</option>
+                            <option value="12">Pabrik 3</option>
+                            <option value="15">Pabrik 4</option>
                             <option value="6">YCME</option>
                             <option value="7">YEV</option>
                             <option value="10">YAM</option>
                             <option value="8">YIG</option>
                             <option value="9">YSM</option>
-                            <option value="11">YEV SMOOT</option>
-                            <option value="12">YEV OFFERO</option>
                             <option value="13">YEV SUNRA</option>
-                            <option value="14">YEV AIMA</option>
+                            <option value="14">YEV AIMA</option> --}}
                             {{-- <option value="1">{{ __('Pabrik 1') }}</option>
                                 <option value="2">{{ __('Pabrik 2') }}</option>
                                 <option value="3">{{ __('Kantor') }}</option>
@@ -225,18 +263,11 @@
                         <select wire:model.live="selected_company" class="form-select"
                             aria-label="Default select example">
                             <option value="0"selected>{{ __('All Companies') }}</option>
-                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
-                                <option value="2">{{ __('Pabrik 2') }}</option>
-                                <option value="3">{{ __('Kantor') }}</option> --}}
-                            <option value="4">ASB</option>
-                            <option value="5">DPA</option>
-                            <option value="6">YCME</option>
-                            <option value="7">YEV</option>
-                            <option value="8">YIG</option>
-                            <option value="9">YSM</option>
-                            <option value="10">YAM</option>
-                            <option value="11">GAMA</option>
-                            <option value="12">WAS</option>
+                            @foreach ($companies as $c)
+                                <option value="{{ $c->id }}">{{ $c->company_name }}
+                                </option>
+                            @endforeach
+
                         </select>
                     </div>
 
@@ -245,16 +276,15 @@
                         <select wire:model.live="selected_departemen" class="form-select"
                             aria-label="Default select example">
                             <option value="0"selected>{{ __('All Department') }}</option>
-                            @foreach ($departments as $department)
+                            {{-- @foreach ($departments as $department)
                                 <option value="{{ nama_department($department) }}">{{ nama_department($department) }}
                                 </option>
+                            @endforeach --}}
+                            @foreach ($departments as $d)
+                                <option value="{{ $d->id }}">{{ $d->nama_department }}</option>
                             @endforeach
 
-                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
-                                <option value="2">{{ __('Pabrik 2') }}</option>
-                                <option value="3">{{ __('Kantor') }}</option>
-                                <option value="4">ASB</option>
-                                <option value="5">DPA</option> --}}
+
                         </select>
                     </div>
 
@@ -295,7 +325,7 @@
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('jabatan')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i></th>
-                                <th wire:click="sortColumnName('placement')">{{ __('Placement') }} <i
+                                <th wire:click="sortColumnName('placement')">{{ __('Directorate') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
                                 <th wire:click="sortColumnName('company')">{{ __('Company') }} <i
@@ -343,9 +373,12 @@
                                 <th wire:click="sortColumnName('bonus1x')">{{ __('Bonus/U.Makan') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('bonus1x')">{{ __('Bonus Karyawan') }} <i
+                                <th wire:click="sortColumnName('thr')">{{ __('THR') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                {{-- <th wire:click="sortColumnName('bonus1x')">{{ __('Bonus Karyawan') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th> --}}
                                 <th wire:click="sortColumnName('potongan1x')">{{ __('Potongan 1X') }}<i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -374,6 +407,16 @@
                                 <th wire:click="sortColumnName('tanggungan')">Tanggungan <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                <th wire:click="sortColumnName('ptkp')">{{ __('PTKP') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th>{{ __('TER') }}</th>
+
+                                <th wire:click="sortColumnName('total_bpjs')">{{ __('Total BPJS') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('bpjs_adjustment')">{{ __('BPJS Adjustment') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('pph21')">{{ __('PPh21') }} <i
+                                        class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('total')">{{ __('Total') }} <i
                                         class="fa-solid fa-sort"></i></th>
 
@@ -400,10 +443,10 @@
                                             <td>{{ month_year($p->date) }}</td>
                                             <td>{{ $p->nama }}</td>
                                             <td>{{ $p->status_karyawan }}</td>
-                                            <td>{{ $p->jabatan }}</td>
-                                            <td>{{ $p->placement }}</td>
-                                            <td>{{ $p->company }}</td>
-                                            <td>{{ $p->departemen }}</td>
+                                            <td>{{ nama_jabatan($p->jabatan_id) }}</td>
+                                            <td>{{ nama_placement($p->placement_id) }}</td>
+                                            <td>{{ nama_company($p->company_id) }}</td>
+                                            <td>{{ nama_department($p->department_id) }}</td>
                                             <td>{{ $p->metode_penggajian }}</td>
                                             <td class="text-end">{{ $p->hari_kerja }}</td>
                                             <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>
@@ -441,9 +484,12 @@
 
                                             @endphp
                                             <td class="text-end">
-                                                {{ number_format($total_bonus_dari_karyawan) }}
-                                                {{-- {{ $total_bonus_dari_karyawan ? number_format($total_bonus_dari_karyawan) : '' }} --}}
+                                                {{ $p->thr ? number_format($p->thr) : '' }}
                                             </td>
+
+                                            {{-- <td class="text-end">
+                                                {{ number_format($total_bonus_dari_karyawan) }}
+                                            </td> --}}
                                             <td class="text-end">
                                                 {{ $p->potongan1x ? number_format($p->potongan1x) : '' }}
                                             </td>
@@ -472,6 +518,16 @@
                                                 {{ $p->tanggungan ? number_format($p->tanggungan) : '' }}
                                             </td>
 
+                                            <td class="text-end">{{ $p->ptkp }}</td>
+
+                                            @if ($p->ptkp != '')
+                                                <td class="text-end">{{ get_ter($p->ptkp) }}</td>
+                                            @else
+                                                <td class="text-end"></td>
+                                            @endif
+                                            <td class="text-end">{{ number_format($p->total_bpjs) }}</td>
+                                            <td class="text-end">{{ number_format($p->bpjs_adjustment) }}</td>
+                                            <td class="text-end">{{ number_format($p->pph21) }}</td>
                                             <td class="text-end">{{ number_format($p->total) }}</td>
 
                                         </tr>
@@ -485,21 +541,17 @@
                     {{ $payroll->onEachSide(0)->links() }}
                 </div>
             </div>
-            <p class="px-3">{{ __('Total') }}
-                {{ getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year) }}
+            <p class="px-3">{{ __('Total : ') }} {{ getTotalWorkingDays($year, $month) }} Days.
+                ( {{ getTotalWorkingDays($year, $month) - jumlah_libur_nasional($month, $year) }}
 
                 {{ __('working days with') }}
-                {{ jumlah_libur_nasional($month, $year) }} {{ __('Holidays') }}</p>
+                {{ jumlah_libur_nasional($month, $year) }} {{ __('Holidays') }} )
+            </p>
+
             <p class="px-3 text-success">{{ __('Last update') }}: {{ $last_build }} </p>
         </div>
     </div>
     @if ($data_payroll != null && $data_karyawan != null)
         @include('modals.payroll-modal')
     @endif
-
-
-
-
-
-
 </div>
