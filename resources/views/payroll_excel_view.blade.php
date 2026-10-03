@@ -352,8 +352,9 @@
                     @endif
 
 
-                    {{-- <td style="text-align: right"> {{ $total_bpjs_company }}</td> --}}
-                    <td style="text-align: right"> {{ $d->total_bpjs }}</td>
+                    {{-- <td style="text-align: right"> {{ $d->total_bpjs }}</td> --}}
+                    {{-- kolom total BPJS/Total Tax, di minta untuk disamakan dengan gaji bpjs with adjustment oleh rakha tgl 3 okt 2026 --}}
+                    <td style="text-align: center"> {{ $d->bpjs_adjustment }}</td>
 
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
