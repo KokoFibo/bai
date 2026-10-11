@@ -64,3 +64,18 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+Cara untuk grant select table tertentu
+mysql -u root -p
+
+CREATE USER 'ai_readonly'@'localhost' IDENTIFIED BY 'password123';
+GRANT SELECT ON bai.karyawans TO 'ai_readonly'@'localhost';
+GRANT SELECT ON bai.jabatans TO 'ai_readonly'@'localhost';
+GRANT SELECT ON bai.companies TO 'ai_readonly'@'localhost';
+GRANT SELECT ON bai.placements TO 'ai_readonly'@'localhost';
+GRANT SELECT ON bai.karyawans TO 'ai_readonly'@'localhost';
+GRANT SELECT ON bai.departments TO 'ai_readonly'@'localhost';
+
+-- ulangi GRANT untuk tiap tabel di allowed_tables
+
+FLUSH PRIVILEGES;
