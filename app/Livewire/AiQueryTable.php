@@ -3,8 +3,10 @@
 namespace App\Livewire;
 
 use App\Services\GeminiSqlService;
+use App\Support\ResultTable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
 use Livewire\Component;
@@ -45,18 +47,33 @@ class AiQueryTable extends Component
         $this->resetResult();
         $this->asked = true;
 
+        $sql = '';
+
         try {
-            $result            = $ai->generate($this->prompt);
-            $this->explanation = $result['explanation'];
-            $this->sql         = $result['sql'];
-            $this->warning     = $result['missing']
+            $result = $ai->generate($this->prompt);
+            $sql    = $result['sql'];
+
+            // SQL dan penjelasan AI hanya disimpan di state (dan dikirim ke browser) untuk user yang berhak melihat card
+            if ($this->canSeeAiCard()) {
+                $this->explanation = $result['explanation'];
+                $this->sql         = $sql;
+            }
+
+            $this->warning = $result['missing']
                 ? 'Tabel berikut tidak terbaca oleh user database (cek nama tabel di config atau GRANT SELECT): ' . implode(', ', $result['missing'])
                 : null;
 
-            $this->execute($ai);
+            // AI tidak bisa menjawab: tampilkan alasannya kepada semua user
+            if ($sql === '' && $result['explanation'] !== '') {
+                $this->error = $result['explanation'];
+
+                return;
+            }
+
+            $this->execute($ai, $sql);
         } catch (Throwable $e) {
             $this->error = $e->getMessage();
-            Log::warning('AI query gagal', ['prompt' => $this->prompt, 'sql' => $this->sql, 'error' => $e->getMessage()]);
+            Log::warning('AI query gagal', ['prompt' => $this->prompt, 'sql' => $sql, 'error' => $e->getMessage()]);
         }
     }
 
@@ -66,16 +83,20 @@ class AiQueryTable extends Component
         $this->ask($ai);
     }
 
-    /** Jalankan ulang SQL yang diedit manual (tetap divalidasi). */
+    /** Jalankan ulang SQL yang diedit manual (tetap divalidasi). Hanya untuk user yang berhak melihat card. */
     public function rerun(GeminiSqlService $ai): void
     {
+        if (! $this->canSeeAiCard()) {
+            return;
+        }
+
         $this->forgetResult();
         $this->reset('columns', 'error', 'search', 'sortBy', 'page');
         $this->sortDir   = 'asc';
         $this->totalRows = 0;
 
         try {
-            $this->execute($ai);
+            $this->execute($ai, $this->sql);
         } catch (Throwable $e) {
             $this->error = $e->getMessage();
         }
@@ -116,12 +137,24 @@ class AiQueryTable extends Component
         $this->totalRows = 0;
     }
 
-    private function execute(GeminiSqlService $ai): void
+    private function canSeeAiCard(): bool
     {
-        $data = $ai->run($this->sql);
+        return GeminiSqlService::userRoleIn(
+            (array) config('ai-query.translation_card.roles', []),
+            (string) config('ai-query.translation_card.role_attribute', 'role')
+        );
+    }
+
+    private function execute(GeminiSqlService $ai, string $sql): void
+    {
+        $data = $ai->run($sql);
 
         $this->resultKey = $this->keyPrefix() . Str::uuid();
-        Cache::put($this->resultKey, $data['rows'], now()->addMinutes(30));
+        Cache::put($this->resultKey, [
+            'rows'    => $data['rows'],
+            'columns' => $data['columns'],
+            'prompt'  => $this->prompt,
+        ], now()->addMinutes(30));
 
         $this->columns   = $data['columns'];
         $this->totalRows = count($data['rows']);
@@ -138,7 +171,9 @@ class AiQueryTable extends Component
             return [];
         }
 
-        return Cache::get($this->resultKey, []);
+        $payload = Cache::get($this->resultKey);
+
+        return is_array($payload) ? ($payload['rows'] ?? []) : [];
     }
 
     private function forgetResult(): void
@@ -157,39 +192,35 @@ class AiQueryTable extends Component
 
     private function filtered(array $rows): array
     {
-        if ($this->search !== '') {
-            $q     = mb_strtolower($this->search);
-            $money = $this->moneyColumns();
+        return ResultTable::filter($rows, $this->columns, $this->search, $this->sortBy, $this->sortDir);
+    }
 
-            // Pencarian juga cocok dengan angka uang yang tampil (mis. "5,000,000")
-            $rows = array_filter($rows, function ($r) use ($q, $money) {
-                $parts = [];
-                foreach ($r as $key => $value) {
-                    $parts[] = (string) $value;
-                    if (isset($money[$key]) && is_numeric($value)) {
-                        $parts[] = number_format((float) $value, 0, '.', ',');
-                    }
-                }
-
-                return str_contains(mb_strtolower(implode(' ', $parts)), $q);
-            });
+    /** Alasan tombol export belum aktif (null = siap dipakai). */
+    private function exportProblem(): ?string
+    {
+        if (! class_exists(\PhpOffice\PhpSpreadsheet\Spreadsheet::class)) {
+            return 'Export Excel belum aktif: paket PhpSpreadsheet belum terpasang. Jalankan: composer require phpoffice/phpspreadsheet';
+        }
+        if (! Route::has('ai-query.export')) {
+            return 'Export Excel belum aktif: route "ai-query.export" belum ada. Tambahkan di routes/web.php (lihat README), lalu jalankan: php artisan route:clear';
         }
 
-        if ($this->sortBy) {
-            $col = $this->sortBy;
-            $dir = $this->sortDir === 'asc' ? 1 : -1;
+        return null;
+    }
 
-            usort($rows, function ($a, $b) use ($col, $dir) {
-                $x = $a[$col] ?? null;
-                $y = $b[$col] ?? null;
-
-                return $dir * (is_numeric($x) && is_numeric($y)
-                    ? $x <=> $y
-                    : strnatcasecmp((string) $x, (string) $y));
-            });
+    /** Tautan export Excel (mengikuti pencarian & urutan aktif). Null jika route/paket belum terpasang. */
+    private function exportUrl(): ?string
+    {
+        if (! $this->resultKey || $this->totalRows < 1 || $this->exportProblem()) {
+            return null;
         }
 
-        return array_values($rows);
+        return route('ai-query.export', array_filter([
+            'key'    => $this->resultKey,
+            'search' => $this->search,
+            'sort'   => $this->sortBy,
+            'dir'    => $this->sortDir,
+        ], fn ($v) => $v !== null && $v !== ''));
     }
 
     public function render()
@@ -213,6 +244,9 @@ class AiQueryTable extends Component
         return view('livewire.ai-query-table', [
             'items'    => array_slice($all, ($this->page - 1) * $this->perPage, $this->perPage),
             'hasRows'  => $this->totalRows > 0,
+            'exportUrl' => $this->exportUrl(),
+            'exportProblem' => $this->totalRows > 0 ? $this->exportProblem() : null,
+            'showAiCard' => $this->canSeeAiCard(),
             'money'    => $this->moneyColumns(),
             'labels'   => collect($this->columns)->mapWithKeys(fn ($c) => [$c => GeminiSqlService::label($c)])->all(),
             'total'    => $total,

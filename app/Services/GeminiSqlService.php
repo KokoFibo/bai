@@ -353,16 +353,25 @@ TXT;
         return $new;
     }
 
-    /** User dengan nilai kolom role (mis. role = 5) termasuk dalam daftar role yang dibatasi. Tanpa login = dibatasi. */
+    /** Fail closed: tanpa login dianggap termasuk role yang dibatasi. */
     private function isCapped(array $roles): bool
     {
-        $user = auth()->user();
-        if (! $user) {
+        if (! auth()->user()) {
             return true;
         }
 
-        $attr  = (string) config('ai-query.salary_cap.role_attribute', 'role');
-        $value = method_exists($user, 'getRawOriginal') ? $user->getRawOriginal($attr) : ($user->{$attr} ?? null);
+        return self::userRoleIn($roles, (string) config('ai-query.salary_cap.role_attribute', 'role'));
+    }
+
+    /** Apakah user yang login memiliki nilai kolom role (mis. role = 8) yang termasuk dalam $roles? Tanpa login = false. */
+    public static function userRoleIn(array $roles, string $attribute = 'role'): bool
+    {
+        $user = auth()->user();
+        if (! $user) {
+            return false;
+        }
+
+        $value = method_exists($user, 'getRawOriginal') ? $user->getRawOriginal($attribute) : ($user->{$attribute} ?? null);
 
         if (! is_scalar($value)) {
             return false;

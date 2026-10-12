@@ -45,6 +45,13 @@ return [
         'max'            => 4500000,      // 4,5 juta, batas ini ikut ditampilkan (<=)
     ],
 
+    // Card "Hasil terjemahan AI" (penjelasan + SQL yang bisa diedit) hanya untuk user dengan role ini.
+    // Untuk user lain, SQL dan penjelasan AI juga tidak dikirim ke browser.
+    'translation_card' => [
+        'roles'          => [8],
+        'role_attribute' => 'role',
+    ],
+
     // Tabel referensi kecil (bukan data sensitif) yang isinya dikirim ke AI sebagai contoh,
     // supaya "company das" bisa dicocokkan ke nama perusahaan yang sebenarnya.
     'lookup_tables'      => ['companies', 'departments', 'jabatans', 'placements'],
@@ -83,6 +90,22 @@ return [
     // atau namanya ada persis di money_columns. Contoh: gaji_pokok, tunjangan_jabatan, total_gaji.
     'money_keywords' => ['gaji', 'tunjangan', 'bonus', 'iuran', 'denda', 'upah', 'thr', 'insentif', 'biaya', 'nominal', 'salary', 'pendapatan'],
     'money_columns'  => [],
+
+    // Export Excel (.xlsx). Memerlukan: composer require phpoffice/phpspreadsheet
+    'export' => [
+        'title'        => 'Laporan Data',
+        'filename'     => 'hasil-query',   // ditambah tanggal-jam otomatis
+        'numbering'    => true,            // kolom "No" di paling kiri
+        'totals'       => true,            // baris Total (SUBTOTAL, ikut berubah saat difilter di Excel) untuk kolom uang
+        'memory_limit' => '1024M',         // export ribuan baris memerlukan memori besar
+        'colors'       => [                // hex tanpa #
+            'banner'  => '1E3A8A',         // biru tua: judul
+            'header'  => '2563EB',         // biru: baris judul kolom
+            'stripe'  => 'EFF6FF',         // biru sangat muda: baris selang-seling
+            'border'  => 'CBD5E1',         // abu-abu: garis tabel
+            'total'   => 'DBEAFE',         // biru muda: baris total
+        ],
+    ],
 
     // null = tanpa batas, tampilkan semua baris sesuai isi database.
     // PERHATIAN: hasil sangat besar (puluhan ribu baris, mis. absensi) memakai banyak memori PHP.
