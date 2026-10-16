@@ -77,17 +77,20 @@
                 <button class="btn btn-sm btn-success">Upload Presensi</button>
             </a>
         </div>
-        @if (auth()->user()->role == 8)
-            <div class="d-flex align-items-center flex-wrap gap-2 mt-2 mx-3">
+        <div class="d-flex align-items-center flex-wrap gap-2 mt-2 mx-3">
+            @if (auth()->user()->role == 8)
                 <a href="/deleteduplicatepresensi">
                     <button class="btn btn-sm btn-success nightowl-daylight">{{ __('Cek Duplikat') }}</button></a>
-                <a onclick="return confirm('Mau delete Tgl Presensi?')" href="/yfdeletetanggalpresensiwr">
+            @endif
+            @if (auth()->user()->role >= 6)
+                <a href="/yfdeletetanggalpresensiwr">
                     <button
                         class="btn btn-sm btn-warning nightowl-daylight">{{ __('Delete Tgl Presensi') }}</button></a>
                 <a href="/addpresensi">
                     <button class="btn btn-sm btn-success nightowl-daylight">{{ __('Add Presensi') }}</button></a>
-            </div>
-        @endif
+            @endif
+
+        </div>
 
         <style>
             .table td,
