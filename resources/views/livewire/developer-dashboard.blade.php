@@ -60,5 +60,7 @@
             Company ['YAM', 'YIG', 'YCME', 'YSM','YEV']</button>
         <a href="/delete-monthly-presensi"><button class='btn btn-danger'>Delete
                 Monthly Presensi</button></a>
+        <a href="/delete-user-backend"><button class='btn btn-danger'>Delete
+                User Backend</button></a>
     </div>
 </div>
