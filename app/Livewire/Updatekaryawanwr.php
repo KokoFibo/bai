@@ -63,6 +63,8 @@ class Updatekaryawanwr extends Component
     public $company_id_awal;
     public $nama_awal;
     public $outsource_awal;
+    public $pendidikan, $jurusan, $nama_kampus;
+
 
     public function syncApplicantFiles($id_karyawan)
     {
@@ -251,7 +253,9 @@ class Updatekaryawanwr extends Component
         $this->hp2 = trim($data->hp2);
         $this->hubungan1 = trim($data->hubungan1);
         $this->hubungan2 = trim($data->hubungan2);
-
+        $this->pendidikan = $data->pendidikan;
+        $this->jurusan = trim($data->jurusan);
+        $this->nama_kampus = trim($data->nama_kampus);
 
         // Identitas
         $this->jenis_identitas = trim($data->jenis_identitas);
@@ -311,6 +315,9 @@ class Updatekaryawanwr extends Component
         $this->tanggungan = $data->tanggungan;
         $this->no_npwp = $data->no_npwp;
         $this->ptkp = $data->ptkp;
+        $this->id_file_karyawan = $data->id_file_karyawan;
+        $this->jurusan = $data->jurusan;
+        $this->nama_kampus = $data->nama_kampus;
         $this->id_file_karyawan = $data->id_file_karyawan;
 
         // tambahan baru
@@ -420,7 +427,9 @@ class Updatekaryawanwr extends Component
             'hp2' => 'nullable',
             'hubungan1' => 'nullable',
             'hubungan2' => 'nullable',
-
+            'pendidikan' => 'required',
+            'jurusan' => 'nullable',
+            'nama_kampus' => 'nullable',
 
             // IDENTITAS
             'jenis_identitas' => 'required',
@@ -863,7 +872,9 @@ class Updatekaryawanwr extends Component
         $data->hp2 = $this->hp2;
         $data->hubungan1 = $this->hubungan1;
         $data->hubungan2 = $this->hubungan2;
-
+        $data->pendidikan = $this->pendidikan;
+        $data->jurusan = $this->jurusan;
+        $data->nama_kampus = $this->nama_kampus;
 
         // Identitas
         $data->jenis_identitas = $this->jenis_identitas;

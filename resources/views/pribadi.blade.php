@@ -122,6 +122,48 @@
                 </div>
             </div>
         </div>
+
+        {{-- Pendidikan Terakhir --}}
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('') }}Pendidikan <span class="text-danger">*</span></label>
+                    <select wire:model.live="pendidikan" class="form-select" @error('pendidikan') is-invalid @enderror
+                        aria-label="Default select example">
+                        <option value=" ">{{ __('-- Pilih Pendidikan --') }}</option>
+                        <option value="Tidak Bersekolah">Tidak Bersekolah</option>
+                        <option value="SD">SD</option>
+                        <option value="SMP">SMP</option>
+                        <option value="SMA/SMK">SMA/SMK</option>
+                        <option value="D1">D1</option>
+                        <option value="D2">D2</option>
+                        <option value="D3">D3</option>
+                        <option value="D4">D4</option>
+                        <option value="S1">S1</option>
+                        <option value="S2">S2</option>
+                        <option value="S3">S3</option>
+                    </select>
+                    @error('pendidikan')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            @if (!in_array($pendidikan, ['Tidak Bersekolah', 'SD', 'SMP', '']))
+                <div class="col-md-4">
+                    <label class="form-label">{{ __('Jurusan') }} </label>
+                    <input wire:model="jurusan" type="text" class="form-control ">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">{{ __('Nama Sekolah/Kampus') }} </label>
+                    <input wire:model="nama_kampus" type="text" class="form-control ">
+
+                </div>
+            @endif
+        </div>
+
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
@@ -172,6 +214,9 @@
                 </div>
             </div>
         </div>
+
+
+
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
