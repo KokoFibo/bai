@@ -42,6 +42,9 @@
                 </div>
             @endif
 
+            <livewire:pendidikan-stats-chart />
+
+
             <!-- Hari Ini -->
             <section class="dash-section">
                 <h2 class="dash-section__title">
