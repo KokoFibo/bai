@@ -260,6 +260,15 @@
                                     <a href="/infokaryawan">
                                         <button class="btn btn-info">Informasi</button> </a>
                                 </th> --}}
+                                @if (auth()->user()->role >= 5)
+                                    <th style="width: 150px; border-style: none;">
+                                        <a href="/excelkhusus">
+                                            <button type="button" class="btn btn-success col-12">
+                                                Excel Khusus
+                                            </button>
+                                        </a>
+                                    </th>
+                                @endif
 
 
                             </tr>
