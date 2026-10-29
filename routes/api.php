@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\LaporanApiController;
 use App\Http\Controllers\LarkController;
 use App\Http\Controllers\UserSyncController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\LaporanApiController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +42,8 @@ Route::get('/latest-month-year/{user_id}', [AttendanceController::class, 'getLat
 Route::get('/get-payroll/{id_karyawan}/{month}/{year}', [ApiController::class, 'getPayroll']);
 
 Route::post('/user/update-email', [ApiController::class, 'updateEmail']);
+Route::get(
+    '/karyawan/{id_karyawan}/pendidikan',
+    [KaryawanController::class, 'checkPendidikan']
+);
+Route::put('/karyawan/{id_karyawan}/pendidikan', [KaryawanController::class, 'updatePendidikan']);
