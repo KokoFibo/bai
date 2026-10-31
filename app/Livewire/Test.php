@@ -64,7 +64,13 @@ class Test extends Component
 
   public function render()
   {
-
+    // $data = Karyawan::where('pendidikan', '!=', null)->get();
+    // dd($data->count());
+    // foreach ($data as $item) {
+    //   $item->pendidikan = null;
+    //   $item->save();
+    // }
+    // $data = Karyawan::where('pendidikan', '!=', null)->count();
 
     dd('Aman');
 
