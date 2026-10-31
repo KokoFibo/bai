@@ -52,7 +52,7 @@
                     {{-- <td style="text-align: center">{{ "'" . str_pad($d->no_identitas, 16, '0', STR_PAD_LEFT) }}</td> --}}
                     {{-- <td style="text-align: center">{{ str_pad($d->no_identitas, 16, '0', STR_PAD_LEFT) }}</td> --}}
                     {{-- <td style="text-align: center">{{ (string) $d->no_identitas }}</td> --}}
-                    <td style="text-align: center">'{{ $d->no_identitas_str }}</td>
+                    <td style="text-align: center">'{{ $d->no_identitas }}</td>
                     {{-- <td style="mso-number-format:\@">{{ $d->no_identitas_str }}</td> --}}
                     {{-- <td style="text-align: center">{{ "'" . $d->no_identitas }}</td> --}}
 
